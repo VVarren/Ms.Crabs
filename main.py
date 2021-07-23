@@ -42,6 +42,10 @@ async def on_message(message):
             await message.channel.send('You have offended the law, now FACE JUDGEMENT!! -1bp(Bronwie Points)')
             BrowniePoints[message.author] -= 1
             print(BrowniePoints)
+            if BrowniePoints[message.author] == 2:
+                await message.channel.send('You have 2 more bp. Please avoid cussing, you will be kicked when you reach 0')
+            if BrowniePoints[message.author] == 1:
+                await message.channel.send('This is your last chance before being kicked')
             #Kick them off the server if they have 0 bp
             if BrowniePoints[message.author] == 0:
                 await message.guild.kick(message.author,reason = 'bp was too low')

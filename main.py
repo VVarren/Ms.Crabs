@@ -12,6 +12,7 @@ if word is in message, give warning
 #Imports
 import os
 import discord
+from collections import defaultdict
 
 #Start Client
 client = discord.Client()
@@ -22,8 +23,7 @@ words = file.read().splitlines()
 file.close()
 
 #Var
-BrowniePoints = {}
-
+BrowniePoints = defaultdict(lambda:3)
 
 
 #The meats of the file. IDk how to title this lol.
@@ -35,19 +35,24 @@ async def on_ready():
 async def on_message(message):
     if message.author == client:
         return
-
     for word in words:
         if word in message.content.lower():
             await message.channel.send('You have offended the law, now FACE JUDGEMENT!! -1bp(Bronwie Points)')
-            if message.author not in BrowniePoints:
-                BrowniePoints[message.author] = 3
             BrowniePoints[message.author] -= 1
             print(BrowniePoints)
             if BrowniePoints[message.author] == 0:
                 await message.guild.kick(message.author,reason = 'bp was too low')
+    if message.content.lower().startswith("thank"):
+        for mention in message.mentions:
+            BrowniePoints[mention] += 1
+            if BrowniePoints[mention] > 3:
+                BrowniePoints[mention] = 3
+            await message.channel.send(f'You have thanked {mention}. They now have {BrowniePoints[mention]} bp')
 
 
-#Give all members 3hp points
-#Everyday everyone has 1 brownie point to give to another person if they so believe they deserve it
+
+#@tasks.loop(seconds = 5)
+#async def giver():
+#   pass
 
 client.run(os.getenv('TOKEN'))

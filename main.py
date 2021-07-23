@@ -13,6 +13,7 @@ if word is in message, give warning
 import os
 import discord
 from collections import defaultdict
+from discord.ext import tasks
 
 #Start Client
 client = discord.Client()
@@ -50,9 +51,9 @@ async def on_message(message):
             await message.channel.send(f'You have thanked {mention}. They now have {BrowniePoints[mention]} bp')
 
 
-
-#@tasks.loop(seconds = 5)
-#async def giver():
-#   pass
+# every 1 hour, person can give 1 bp.
+@tasks.loop(seconds = 5)
+async def giver():
+   
 
 client.run(os.getenv('TOKEN'))

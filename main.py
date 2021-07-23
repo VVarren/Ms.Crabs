@@ -25,7 +25,7 @@ file.close()
 
 #Var
 BrowniePoints = defaultdict(lambda:3)
-
+Thanks = set()
 
 #The meats of the file. IDk how to title this lol.
 @client.event
@@ -36,24 +36,33 @@ async def on_ready():
 async def on_message(message):
     if message.author == client:
         return
+    #loop over the message and search for bad words
     for word in words:
         if word in message.content.lower():
             await message.channel.send('You have offended the law, now FACE JUDGEMENT!! -1bp(Bronwie Points)')
             BrowniePoints[message.author] -= 1
             print(BrowniePoints)
+            #Kick them off the server if they have 0 bp
             if BrowniePoints[message.author] == 0:
                 await message.guild.kick(message.author,reason = 'bp was too low')
+    #The thank system
     if message.content.lower().startswith("thank"):
+        if message.author in Thanks:
+            await message.channel.send('Please wait 24 after your initial thank to thank again.')
+            return
+        Thanks.add(message.author)
         for mention in message.mentions:
             BrowniePoints[mention] += 1
+        
             if BrowniePoints[mention] > 3:
                 BrowniePoints[mention] = 3
             await message.channel.send(f'You have thanked {mention}. They now have {BrowniePoints[mention]} bp')
 
+#reset the thank
+@tasks.loop(hours = 24)
+async def thank():
+    global Thanks
+    Thanks = set()
 
-# every 1 hour, person can give 1 bp.
-@tasks.loop(seconds = 5)
-async def giver():
-   
-
+thank.start()
 client.run(os.getenv('TOKEN'))

@@ -5,4 +5,6 @@
 1. Give each person on server 3 strikes. Each time they curse and the bot recognizes it, they lose a strike and get a warning. 
    If user.strikes is 0, you get kicked.
 2. You can thank people by 'Thank @user' to give them 1 more brownie point     
-3. If you have any ideas, please put it in the comments.
+3. Type '$bp' to check your brownie points.
+4. Type '$help' to see all the commands currently implemented
+5. If you have any ideas, please put it in the comments.

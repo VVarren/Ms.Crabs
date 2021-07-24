@@ -61,6 +61,15 @@ async def on_message(message):
             if BrowniePoints[mention] > 3:
                 BrowniePoints[mention] = 3
             await message.channel.send(f'You have thanked {mention}. They now have {BrowniePoints[mention]} bp')
+    if message.content.startswith("$bp"):
+        bpamount = discord.Embed(description = f'You have {BrowniePoints[message.author]} bp')
+        await message.channel.send(embed = bpamount)
+    if message.content.startswith("$help"):
+        assistance = discord.Embed(description = 'To thank someone you type \'thank @user \'\nTo check your brownie points(bp), \'use $bp\'\n(Do not include the quotes)')
+        await message.channel.send(embed = assistance)
+#Need to do help
+
+
 
 #reset the thank
 @tasks.loop(hours = 24)
